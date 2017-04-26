@@ -1,17 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { NgServiceWorker } from '@angular/service-worker';
 
 @Injectable()
 export class ServiceWorkerService {
-
+  private sw: NgServiceWorker = null;
   private swScope = './';
   private swUrl = './worker-basic.min.js';
 
-  constructor(public sw: NgServiceWorker) {
+  constructor(public ngZone: NgZone) {
+    if (navigator['serviceWorker']) {
+      this.sw = new NgServiceWorker(ngZone);
+    }
   }
 
   // for notification testing use https://web-push-codelab.appspot.com/
   public initNotification() {
+    if (!this.sw) {
+      return ;
+    }
     this.logging();
     this.checkServiceWorker().then( reg => {
       if (!reg.active) {
