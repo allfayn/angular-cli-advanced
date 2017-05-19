@@ -10,6 +10,7 @@ if (environment.production) {
   enableProdMode();
 }
 
+// Todo: Custom Service-Worker
 const bootstrap = () => {
   return platformBrowserDynamic().bootstrapModule(AppModule);
 };
